@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Table(name = "rent_assess_info")
 @NoArgsConstructor
-public class ApartmentRatingEntity {
+public class RatingEntity {
 
     @Id
     @SequenceGenerator(name = "rent_assess_infoSequence", sequenceName = "rent_assess_info_sequence", allocationSize = 1)
@@ -22,19 +22,13 @@ public class ApartmentRatingEntity {
     private String comments;
 
     @Column(name = "rating")
-    private  int rating;
+    private  Integer rating;
 
     @Column(name = "registration_date")
     private LocalDateTime registrationDate;
 
     @ManyToOne
     @JoinColumn(name = "apartment_id")
-    private ApartmentEntity apartmentRatingEntity;
+    private ApartmentEntity apartment;
 
-
-    public ApartmentRatingEntity(String comments, int rating) {
-        this.comments = comments;
-        this.rating = rating;
-        this.registrationDate = LocalDateTime.now();
-    }
 }

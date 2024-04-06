@@ -11,4 +11,6 @@ public interface AuthService {
 
     public String  getLogOut(UserRegistrationInfoDto logOutInfoDto);
 
+    public void tokenValid(String token);
+
 }

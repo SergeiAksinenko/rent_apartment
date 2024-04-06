@@ -74,5 +74,4 @@ public class RentApartmentEntity {
         this.street = street;
         this.registrationDate = LocalDateTime.now();
     }
-
 }

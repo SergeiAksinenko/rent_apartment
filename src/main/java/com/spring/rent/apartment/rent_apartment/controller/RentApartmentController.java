@@ -1,6 +1,8 @@
 package com.spring.rent.apartment.rent_apartment.controller;
 
+import com.spring.rent.apartment.rent_apartment.dto.RatingDto;
 import com.spring.rent.apartment.rent_apartment.dto.RentApartmentDto;
+import com.spring.rent.apartment.rent_apartment.service.AuthService;
 import com.spring.rent.apartment.rent_apartment.service.RentApService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +15,17 @@ public class RentApartmentController {
 
     private final RentApService rentService;
 
-    @PostMapping(BASE_PATH_RENT)
-    public String saveNewApartment(@RequestBody RentApartmentDto apartmentDto) {
+    private  final AuthService authService;
+
+    @PostMapping(ADD_NEW_APARTMENT)
+    public String saveNewApartment(@RequestBody RentApartmentDto apartmentDto,
+                                   @RequestHeader String token) {
+        authService.tokenValid(token);
         return rentService.saveRegApartment(apartmentDto);
     }
 
-    @PostMapping(RATING_RENT_APARTMENT)
-    public String addCommentToApartment(@RequestBody RentApartmentDto apartmentDto){
-        return  rentService.addCommentToApartment(apartmentDto);
+    @PostMapping(ADD_NEW_COMMENT)
+    public String addCommentToApartment(@RequestBody RatingDto ratingDto){
+      return rentService.addCommentToApartment(ratingDto);
     }
 }

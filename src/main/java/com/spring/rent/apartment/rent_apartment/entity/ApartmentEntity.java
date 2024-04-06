@@ -3,7 +3,6 @@ package com.spring.rent.apartment.rent_apartment.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,17 +46,18 @@ public class ApartmentEntity {
     @Column(name = "registration_date")
     private LocalDateTime registrationDate;
 
+    @Column(name = "global_rating")
+    private Double globalRating;
+
     @OneToOne(mappedBy = "apartment")
     private AddressEntity address;
 
-    @OneToMany(mappedBy = "apartment")
-    @ToString.Exclude
-    private List<ApartmentRatingEntity> ratingEntity; //'One To Many' attribute type should be a container
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "apartment")
+    private List<RatingEntity> ratingEntity;
 
-    public ApartmentEntity(int numberOfRooms, int area, int pricePerNight,
-                           String startDate, String endDate, int totalGuest,
-                           String availability, String description,
-                           LocalDateTime registrationDate, AddressEntity address) {
+    public ApartmentEntity(int numberOfRooms, int area, int pricePerNight, String startDate, String endDate,
+                           int totalGuest, String availability, String description, LocalDateTime registrationDate,
+                           Double globalRating, AddressEntity address, List<RatingEntity> ratingEntity) {
         this.numberOfRooms = numberOfRooms;
         this.area = area;
         this.pricePerNight = pricePerNight;
@@ -67,7 +67,8 @@ public class ApartmentEntity {
         this.availability = availability;
         this.description = description;
         this.registrationDate = registrationDate;
+        this.globalRating = globalRating;
         this.address = address;
-        this.registrationDate = LocalDateTime.now();
+        this.ratingEntity = ratingEntity;
     }
 }
