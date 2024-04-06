@@ -88,8 +88,10 @@ public class AuthServiceImpl implements AuthService {
             return "Пользователь не найден";
         }
     }
-    public boolean tokenValid(String token){
+    public void tokenValid(String token){
         UserApplicationEntity user = userRepository.getUserApplicationEntityByToken(token);
-        return  !isNull(user);
+        if (isNull(user)){
+            throw new RuntimeException("Войдите в систему");
+        }
     }
 }

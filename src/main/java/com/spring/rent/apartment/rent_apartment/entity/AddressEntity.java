@@ -26,4 +26,5 @@ public class AddressEntity {
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "apartment_id")
     private ApartmentEntity apartment;
+
 }
