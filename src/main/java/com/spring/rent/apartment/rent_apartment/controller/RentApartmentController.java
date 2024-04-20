@@ -28,4 +28,8 @@ public class RentApartmentController {
     public String addCommentToApartment(@RequestBody RatingDto ratingDto){
       return rentService.addCommentToApartment(ratingDto);
     }
+    @PostMapping(FIND_APARTMENT)
+    public RentApartmentDto findApartment(@RequestParam Long id){
+        return rentService.findApartment(id);
+    }
 }

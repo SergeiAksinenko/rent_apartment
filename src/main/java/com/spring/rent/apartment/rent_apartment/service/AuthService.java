@@ -9,7 +9,7 @@ public interface AuthService {
 
     public String getAuthorization(UserAuthInfoDto authorizationInfoDTO);
 
-    public String  getLogOut(UserRegistrationInfoDto logOutInfoDto);
+    public String getLogOut(UserRegistrationInfoDto logOutInfoDto);
 
     public void tokenValid(String token);
 

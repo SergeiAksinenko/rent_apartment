@@ -5,17 +5,21 @@ public class AppConstant {
     /**
      * PATH_CONSTANT
      */
-    public final static String BASE_PATH = "/api";
+    public final static String BASE_PATH_USER = "/api_user";
 
-    public static final String ADD_NEW_APARTMENT = "/api_rent_ap";
+    public static final String REGISTRATION = BASE_PATH_USER + "/registration";
 
-    public static final String REGISTRATION = BASE_PATH + "/registration";
+    public static final String AUTHORIZATION = BASE_PATH_USER + "/authorization";
 
-    public static final String AUTHORIZATION = BASE_PATH + "/authorization";
+    public static final String LOGOUT = BASE_PATH_USER + "/logOut";
 
-    public static final String ADD_NEW_COMMENT = "/comment_rent_ap";
+    public final static String BASE_PATH_APART = "/api_apart";
 
-    public static final String LOGOUT = BASE_PATH + "/logOut";
+    public static final String ADD_NEW_APARTMENT =BASE_PATH_APART + "/add_rent_ap";
+
+    public static final String ADD_NEW_COMMENT =BASE_PATH_APART + "/comment_rent_ap";
+
+    public static final String FIND_APARTMENT =BASE_PATH_APART +  "/find_apart";
 
     /**
      * MESSAGE_CONSTANT
