@@ -7,9 +7,12 @@ import com.spring.rent.apartment.rent_apartment.repository.UserRepository;
 import com.spring.rent.apartment.rent_apartment.service.AuthService;
 import com.spring.rent.apartment.rent_apartment.service.ValidationFieldService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.spring.rent.apartment.rent_apartment.app_constant.AppConstant.AUTH_NOT_FOUND_USER;
@@ -24,27 +27,45 @@ public class AuthServiceImpl implements AuthService {
 
     private final ValidationFieldService validFieldService;
 
+    public static final String USER_NOT_FOUND = "Пользователь не найден";
+
+    public static final String SUCCESSFUL_LOGGED_OUT = "Вы успешно вышли из программы";
+
+    public static final String SUCCESSFUL_REGISTRATION = "успешная регистрация";
+
+    public static final String USER_EXISTS = "Такой пользователь существует в системе";
+
+    public static final String USER_LOGIN_EXISTS = "пользователь с таким логином существует";
+
+    public static final String PASSWORD_REQUIREMENT = "пароль должен содержать не менее 8-ми символов";
+
+    public static final String LOGIN_REQUIREMENT = "логин должен содержать символ '@'";
+
+    public static final String LOG_IN_SYSTEM = "Войдите в систему";
+
+
     @Override
     public String getRegistration(UserRegistrationInfoDto registrationInfoDto) {
         UserApplicationEntity userByNickName = userRepository.getUserApplicationEntityByNickName(registrationInfoDto.getNickName());
 
         if (!isNull(userByNickName)) {
-            return "Такой пользователь существует в системе";
+            return USER_EXISTS;
         }
 
         UserApplicationEntity userByLogin = userRepository.getUserApplicationEntityByLogin(registrationInfoDto.getLogin());
+
         if (!isNull(userByLogin)) {
-            return "пользователь с таким логином существует";
+            return USER_LOGIN_EXISTS;
         }
         if (!validFieldService.isValidPassword(registrationInfoDto.getPassword())) {
-            return "пароль должен содержать не менее 8-ми символов";
+            return PASSWORD_REQUIREMENT;
         }
         if (!validFieldService.isValidLogin(registrationInfoDto.getLogin())) {
-            return "логин должен содержать символ '@'";
+            return LOGIN_REQUIREMENT;
         }
 
         userRepository.save(prepareUser(registrationInfoDto));
-        return "успешная регистрация";
+        return SUCCESSFUL_REGISTRATION;
     }
 
     public UserApplicationEntity prepareUser(UserRegistrationInfoDto registrationInfoDto) {
@@ -54,10 +75,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     public String getAuthorization(UserAuthInfoDto userAuthInfoDto) {
-        UserApplicationEntity user = userRepository.getUserApplicationEntityByLogin(userAuthInfoDto.getLogin());
-        if (isNull(user)) {
-            return AUTH_NOT_FOUND_USER;
-        }
+        Optional<UserApplicationEntity> optionalUser = Optional.ofNullable(userRepository.getUserApplicationEntityByLogin(userAuthInfoDto.getLogin()));
+        UserApplicationEntity user = optionalUser.orElseThrow(() -> new RuntimeException(AUTH_NOT_FOUND_USER));
+
         if (!userAuthInfoDto.getPassword().equals(user.getPassword())) {
             return NOT_VALID_PASSWORD;
         }
@@ -79,19 +99,16 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String getLogOut(UserRegistrationInfoDto logOutInfoDto) {
-        UserApplicationEntity user = userRepository.getUserApplicationEntityByLogin(logOutInfoDto.getLogin());
-        if (!isNull(user)) {
-            user.setToken(null);
-            userRepository.save(user);
-            return "Вы успешно вышли из программы";
-        } else {
-            return "Пользователь не найден";
+        Optional<UserApplicationEntity> userOptional = Optional.ofNullable(userRepository.getUserApplicationEntityByLogin(logOutInfoDto.getLogin()));
+        UserApplicationEntity user = userOptional.orElseThrow(() -> new RuntimeException(USER_NOT_FOUND));
+        user.setToken(null);
+        userRepository.save(user);
+        return SUCCESSFUL_LOGGED_OUT;
+    }
+
+    public void tokenValid(String token) {
+        Optional<UserApplicationEntity> userOptional = Optional.ofNullable(userRepository.getUserApplicationEntityByToken(token));
+        UserApplicationEntity user = userOptional.orElseThrow(()-> new RuntimeException(LOG_IN_SYSTEM));
+        userRepository.save(user);
         }
     }
-    public void tokenValid(String token){
-        UserApplicationEntity user = userRepository.getUserApplicationEntityByToken(token);
-        if (isNull(user)){
-            throw new RuntimeException("Войдите в систему");
-        }
-    }
-}

@@ -9,4 +9,6 @@ public interface RentApService {
     public String saveRegApartment(RentApartmentDto rentApartmentDto);
 
     public String addCommentToApartment(RatingDto ratingDto);
+
+    public RentApartmentDto findApartment(Long id);
 }

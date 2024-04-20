@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RentApartmentMapper {
 
-    public ApartmentEntity DtoToApartmentEntity(RentApartmentDto rentApartmentDto);
+    public ApartmentEntity dtoToApartmentEntity(RentApartmentDto rentApartmentDto);
 
-    public AddressEntity DtoToAddressEntity(RentApartmentDto rentApartmentDto);
+    public AddressEntity dtoToAddressEntity(RentApartmentDto rentApartmentDto);
 
     @Mapping(target = "registrationDate", source = "dateValue")
     @Mapping(target = "apartment", source = "apartmentEntity")
@@ -25,4 +25,5 @@ public interface RentApartmentMapper {
     public RatingEntity DtoToRatingEntity(RatingDto ratingDto, ApartmentEntity apartmentEntity,
                                           LocalDateTime dateValue);
 
+    public  RentApartmentDto entityToApartmentDto(ApartmentEntity apartment,AddressEntity address);
 }

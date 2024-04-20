@@ -18,6 +18,7 @@ import java.util.List;
 
 import static com.spring.rent.apartment.rent_apartment.app_constant.AppConstant.APARTMENT_NOT_FOUND;
 import static com.spring.rent.apartment.rent_apartment.app_constant.AppConstant.SAVE_APARTMENT_SUCCESSFULLY;
+import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
@@ -31,10 +32,18 @@ public class RentApServiceImpl implements RentApService {
 
     public final RatingRepository ratingRepository;
 
-    public String saveRegApartment(RentApartmentDto rentApartmentDto) {
-        ApartmentEntity apartment = mapper.DtoToApartmentEntity(rentApartmentDto);
+    public static final String APARTMENT_IS_EXIST = "Апартаменты уже зарегистрированы";
 
-        AddressEntity address = mapper.DtoToAddressEntity(rentApartmentDto);
+    public static final String COMMENT_IS_DONE = "Спасибо за отзыв!";
+
+    public String saveRegApartment(RentApartmentDto rentApartmentDto) {
+        AddressEntity existingAddress = addressRepository.findByCityAndStreet(rentApartmentDto.getCity(), rentApartmentDto.getStreet());
+        if (!isNull(existingAddress)) {
+            return APARTMENT_IS_EXIST;
+        }
+        ApartmentEntity apartment = mapper.dtoToApartmentEntity(rentApartmentDto);
+
+        AddressEntity address = mapper.dtoToAddressEntity(rentApartmentDto);
 
         apartmentRepository.save(apartment);
 
@@ -56,10 +65,10 @@ public class RentApServiceImpl implements RentApService {
 
         ratingRepository.save(ratingEntity);
 
-        if(ratingEntity.getApartment() != null) {
+        if (ratingEntity.getApartment() != null) {
             calculateGlobalRating(ratingEntity.getApartment());
         }
-        return "Спасибо за отзыв!";
+        return COMMENT_IS_DONE;
     }
 
     private void calculateGlobalRating(ApartmentEntity apartment) {
@@ -72,6 +81,11 @@ public class RentApServiceImpl implements RentApService {
         apartment.setGlobalRating(globalRating);
 
         apartmentRepository.save(apartment);
+    }
+
+    public RentApartmentDto findApartment(Long id) {
+        ApartmentEntity apartment = apartmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Апартаменты недоступны"));
+        return mapper.entityToApartmentDto(apartment, apartment.getAddress());
     }
 }
 
