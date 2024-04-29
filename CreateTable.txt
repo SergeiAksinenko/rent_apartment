@@ -1,0 +1,1 @@
+CREATE TABLE comment (id int8,login varchar,password varchar)

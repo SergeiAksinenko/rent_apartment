@@ -37,7 +37,7 @@ public class RentApServiceImpl implements RentApService {
     public static final String COMMENT_IS_DONE = "Спасибо за отзыв!";
 
     public String saveRegApartment(RentApartmentDto rentApartmentDto) {
-        AddressEntity existingAddress = addressRepository.findByCityAndStreet(rentApartmentDto.getCity(), rentApartmentDto.getStreet());
+        AddressEntity existingAddress = addressRepository.findByCityAndStreetNative(rentApartmentDto.getCity(), rentApartmentDto.getStreet());
         if (!isNull(existingAddress)) {
             return APARTMENT_IS_EXIST;
         }
@@ -72,7 +72,7 @@ public class RentApServiceImpl implements RentApService {
     }
 
     private void calculateGlobalRating(ApartmentEntity apartment) {
-        List<RatingEntity> rating = ratingRepository.findRatingEntitiesByApartment(apartment);
+        List<RatingEntity> rating = ratingRepository.findRatingEntitiesByApartmentJpql(apartment);
         int ratingSum = 0;
         for (RatingEntity ratings : rating) {
             ratingSum += ratings.getRating();

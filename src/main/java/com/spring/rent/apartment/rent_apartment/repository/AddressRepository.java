@@ -2,10 +2,13 @@ package com.spring.rent.apartment.rent_apartment.repository;
 
 import com.spring.rent.apartment.rent_apartment.entity.AddressEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AddressRepository extends JpaRepository<AddressEntity,Long> {
 
-    public AddressEntity findByCityAndStreet(String city,String street);
+//    @Query(nativeQuery = true,value = "SELECT * FROM address_info WHERE city = :city AND street = :street") // нативный запрос
+    @Query(value = "SELECT a FROM AddressEntity a WHERE a.city = :city AND a.street = :street") // JPQL запрос
+    public AddressEntity findByCityAndStreetNative(String city,String street);
 }
