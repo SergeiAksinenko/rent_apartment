@@ -6,9 +6,11 @@ import com.spring.rent.apartment.rent_apartment.entity.UserApplicationEntity;
 import com.spring.rent.apartment.rent_apartment.repository.UserRepository;
 import com.spring.rent.apartment.rent_apartment.service.AuthService;
 import com.spring.rent.apartment.rent_apartment.service.ValidationFieldService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -46,13 +48,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String getRegistration(UserRegistrationInfoDto registrationInfoDto) {
-        UserApplicationEntity userByNickName = userRepository.getUserApplicationEntityByNickName(registrationInfoDto.getNickName());
+        UserApplicationEntity userByNickName = userRepository.getUserApplicationEntityByNickNameJpql(registrationInfoDto.getNickName());
 
         if (!isNull(userByNickName)) {
             return USER_EXISTS;
         }
 
-        UserApplicationEntity userByLogin = userRepository.getUserApplicationEntityByLogin(registrationInfoDto.getLogin());
+        UserApplicationEntity userByLogin = userRepository.getUserApplicationEntityByLoginJpql(registrationInfoDto.getLogin());
 
         if (!isNull(userByLogin)) {
             return USER_LOGIN_EXISTS;
@@ -75,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     public String getAuthorization(UserAuthInfoDto userAuthInfoDto) {
-        Optional<UserApplicationEntity> optionalUser = Optional.ofNullable(userRepository.getUserApplicationEntityByLogin(userAuthInfoDto.getLogin()));
+        Optional<UserApplicationEntity> optionalUser = Optional.ofNullable(userRepository.getUserApplicationEntityByLoginJpql(userAuthInfoDto.getLogin()));
         UserApplicationEntity user = optionalUser.orElseThrow(() -> new RuntimeException(AUTH_NOT_FOUND_USER));
 
         if (!userAuthInfoDto.getPassword().equals(user.getPassword())) {
@@ -99,7 +101,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String getLogOut(UserRegistrationInfoDto logOutInfoDto) {
-        Optional<UserApplicationEntity> userOptional = Optional.ofNullable(userRepository.getUserApplicationEntityByLogin(logOutInfoDto.getLogin()));
+        Optional<UserApplicationEntity> userOptional = Optional.ofNullable(userRepository.getUserApplicationEntityByLoginJpql(logOutInfoDto.getLogin()));
         UserApplicationEntity user = userOptional.orElseThrow(() -> new RuntimeException(USER_NOT_FOUND));
         user.setToken(null);
         userRepository.save(user);
@@ -107,8 +109,20 @@ public class AuthServiceImpl implements AuthService {
     }
 
     public void tokenValid(String token) {
-        Optional<UserApplicationEntity> userOptional = Optional.ofNullable(userRepository.getUserApplicationEntityByToken(token));
+        Optional<UserApplicationEntity> userOptional = Optional.ofNullable(findUserByCriteria(token));
         UserApplicationEntity user = userOptional.orElseThrow(()-> new RuntimeException(LOG_IN_SYSTEM));
         userRepository.save(user);
+        }
+
+        private final EntityManager entityManager;
+        private UserApplicationEntity findUserByCriteria(String token){
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder(); // CriteriaRepository
+            CriteriaQuery<UserApplicationEntity> query = criteriaBuilder.createQuery(UserApplicationEntity.class);
+            Root<UserApplicationEntity> root = query.from(UserApplicationEntity.class); // Корневой элемент для определения сущноности, над которой выполняется запрос
+            query.select(root)
+                    .where(criteriaBuilder.equal(root.get("token"), token));
+            UserApplicationEntity result = entityManager.createQuery(query).getSingleResult();
+
+            return result;
         }
     }

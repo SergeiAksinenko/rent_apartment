@@ -55,7 +55,7 @@ public class RentApartmentEntity {
     private String description;
 
     @Column(name = "registration_date")
-    private LocalDateTime registrationDate; // переделать
+    private LocalDateTime registrationDate;
 
     public RentApartmentEntity(String address, int numberOfRooms, int postalCode,
                                int totalGuest, int pricePerNight,
