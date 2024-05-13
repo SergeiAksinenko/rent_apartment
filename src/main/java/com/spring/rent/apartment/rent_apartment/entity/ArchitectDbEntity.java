@@ -29,9 +29,4 @@ public class ArchitectDbEntity {
     @Column(name = "registration_date")
     private LocalDateTime registrationDate;
 
-    public ArchitectDbEntity(String tableName, String modificationType) {
-        this.tableName = tableName;
-        this.modificationType = modificationType;
-        this.registrationDate = LocalDateTime.now();
-    }
 }

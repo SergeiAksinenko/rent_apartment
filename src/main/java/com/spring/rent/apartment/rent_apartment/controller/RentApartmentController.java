@@ -1,11 +1,17 @@
 package com.spring.rent.apartment.rent_apartment.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.spring.rent.apartment.rent_apartment.dto.LocationInfoDto;
 import com.spring.rent.apartment.rent_apartment.dto.RatingDto;
 import com.spring.rent.apartment.rent_apartment.dto.RentApartmentDto;
+import com.spring.rent.apartment.rent_apartment.dto.WeatherInfoDto;
 import com.spring.rent.apartment.rent_apartment.service.AuthService;
+import com.spring.rent.apartment.rent_apartment.service.IntegrationService;
 import com.spring.rent.apartment.rent_apartment.service.RentApService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.spring.rent.apartment.rent_apartment.app_constant.AppConstant.*;
 
@@ -31,5 +37,15 @@ public class RentApartmentController {
     @PostMapping(FIND_APARTMENT)
     public RentApartmentDto findApartment(@RequestParam Long id){
         return rentService.findApartment(id);
+    }
+
+    @PostMapping(BY_LOCATION)
+    public List<RentApartmentDto> findAllApartment(@RequestBody LocationInfoDto locationInfoDto){
+        return rentService.getInfoByLocation(locationInfoDto);
+    }
+
+    @PostMapping(BY_WEATHER)
+    public String findWeatherInformation(@RequestBody WeatherInfoDto weatherInfoDto) throws JsonProcessingException {
+        return rentService.getInfoByWeather(weatherInfoDto);
     }
 }

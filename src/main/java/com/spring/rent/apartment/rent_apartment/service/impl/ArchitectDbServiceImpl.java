@@ -19,7 +19,7 @@ public class ArchitectDbServiceImpl implements ArchitectDbService {
         Map<String, String> parameters = architectDbDto.getParameters();
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("CREATE TABLE ").append(tableName).append(" (");
+        stringBuilder.append("CREATE TABLE IF NOT EXISTS ").append(tableName).append(" (");
 
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             String columName = entry.getKey();
