@@ -21,6 +21,10 @@ public class AppConstant {
 
     public static final String FIND_APARTMENT =BASE_PATH_APART +  "/find_apart";
 
+    public static final String BY_LOCATION = BASE_PATH_APART + "/by_location";
+
+    public static final String BY_WEATHER = BASE_PATH_APART + "/by_weather";
+
     /**
      * MESSAGE_CONSTANT
      */

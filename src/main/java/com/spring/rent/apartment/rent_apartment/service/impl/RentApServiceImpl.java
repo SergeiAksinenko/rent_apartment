@@ -1,7 +1,10 @@
 package com.spring.rent.apartment.rent_apartment.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.spring.rent.apartment.rent_apartment.dto.LocationInfoDto;
 import com.spring.rent.apartment.rent_apartment.dto.RatingDto;
 import com.spring.rent.apartment.rent_apartment.dto.RentApartmentDto;
+import com.spring.rent.apartment.rent_apartment.dto.WeatherInfoDto;
 import com.spring.rent.apartment.rent_apartment.entity.AddressEntity;
 import com.spring.rent.apartment.rent_apartment.entity.ApartmentEntity;
 import com.spring.rent.apartment.rent_apartment.entity.RatingEntity;
@@ -9,6 +12,8 @@ import com.spring.rent.apartment.rent_apartment.mapper.RentApartmentMapper;
 import com.spring.rent.apartment.rent_apartment.repository.AddressRepository;
 import com.spring.rent.apartment.rent_apartment.repository.RatingRepository;
 import com.spring.rent.apartment.rent_apartment.repository.ApartmentRepository;
+import com.spring.rent.apartment.rent_apartment.service.IntegrationService;
+import com.spring.rent.apartment.rent_apartment.service.IntegrationWeatherService;
 import com.spring.rent.apartment.rent_apartment.service.RentApService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +36,10 @@ public class RentApServiceImpl implements RentApService {
     public final ApartmentRepository apartmentRepository;
 
     public final RatingRepository ratingRepository;
+
+    public final IntegrationService integrationService;
+
+    private final IntegrationWeatherService integrationWeatherService;
 
     public static final String APARTMENT_IS_EXIST = "Апартаменты уже зарегистрированы";
 
@@ -86,6 +95,17 @@ public class RentApServiceImpl implements RentApService {
     public RentApartmentDto findApartment(Long id) {
         ApartmentEntity apartment = apartmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Апартаменты недоступны"));
         return mapper.entityToApartmentDto(apartment, apartment.getAddress());
+    }
+
+    @Override
+    public List<RentApartmentDto> getInfoByLocation(LocationInfoDto locationInfoDto) {
+        integrationService.integrationWithGeocoder(locationInfoDto);
+        return null;
+    }
+
+    @Override
+    public String getInfoByWeather(WeatherInfoDto weatherInfoDto) throws JsonProcessingException {
+        return integrationWeatherService.integrationWeatherCode(weatherInfoDto);
     }
 }
 
