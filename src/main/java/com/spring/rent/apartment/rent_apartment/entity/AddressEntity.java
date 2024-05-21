@@ -9,7 +9,7 @@ import lombok.Data;
 public class AddressEntity {
 
     @Id
-    @SequenceGenerator(name="address_infoSequence", sequenceName="address_info_sequence", allocationSize = 1)
+    @SequenceGenerator(name="address_infoSequence", sequenceName="address_info_sequence",initialValue = 3, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="address_infoSequence")
     @Column(name = "id")
     private Long id;

@@ -14,7 +14,7 @@ import java.util.List;
 public class ApartmentEntity {
 
     @Id
-    @SequenceGenerator(name="apartment_infoSequence", sequenceName="apartment_info_sequence", allocationSize = 1)
+    @SequenceGenerator(name="apartment_infoSequence", sequenceName="apartment_info_sequence",initialValue = 3, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="apartment_infoSequence")
     @Column(name = "id")
     private Long id;
