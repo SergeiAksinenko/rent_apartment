@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<UserApplicationEntity, Long> {
 
@@ -18,4 +20,5 @@ public interface UserRepository extends JpaRepository<UserApplicationEntity, Lon
     @Query(value = "SELECT a FROM UserApplicationEntity a WHERE a.token = :token")
     public UserApplicationEntity getUserApplicationEntityByTokenNative(String token);
 
+    public List<UserApplicationEntity> getUserApplicationEntitiesByTokenIsNotNull();
 }

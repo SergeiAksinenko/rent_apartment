@@ -25,6 +25,10 @@ public class AppConstant {
 
     public static final String BY_WEATHER = BASE_PATH_APART + "/by_weather";
 
+    public static final String BASE_ARCHITECT_DB = "/architect";
+
+    public static final String TABLE_FUNCTION = BASE_ARCHITECT_DB + "/table_function";
+
     /**
      * MESSAGE_CONSTANT
      */

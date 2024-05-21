@@ -13,12 +13,12 @@ import java.time.LocalDateTime;
 public class UserApplicationEntity {
 
     @Id
-    @SequenceGenerator(name="user_infoSequence", sequenceName="user_info_sequence", allocationSize = 1)
+    @SequenceGenerator(name="user_infoSequence", sequenceName="user_info_sequence",initialValue = 2, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="user_infoSequence")
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "nickName")
+    @Column(name = "nick_name")
     private String nickName;
 
     @Column(name = "login")
@@ -27,7 +27,7 @@ public class UserApplicationEntity {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "registrationData")
+    @Column(name = "registration_data")
     private LocalDateTime registrationData;
 
     @Column(name = "token")

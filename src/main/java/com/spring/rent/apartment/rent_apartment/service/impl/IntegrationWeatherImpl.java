@@ -42,7 +42,7 @@ public class IntegrationWeatherImpl implements IntegrationWeatherService {
 
         String message =  "Погода на время заезда в апартаменты: " + condition + " ," + temp_avg + " градусов";
 
-        return message; // было resultInfoByWeather.
+        return message;
     }
 
     private String prepareUrl(WeatherInfoDto weatherInfoDto){

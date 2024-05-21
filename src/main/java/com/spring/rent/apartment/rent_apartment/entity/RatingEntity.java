@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class RatingEntity {
 
     @Id
-    @SequenceGenerator(name = "rent_assess_infoSequence", sequenceName = "rent_assess_info_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "rent_assess_infoSequence", sequenceName = "rent_assess_info_sequence",initialValue = 3, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rent_assess_infoSequence")
     @Column(name = "id")
     private Long id;
