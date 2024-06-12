@@ -1,5 +1,7 @@
 package com.spring.rent.apartment.rent_apartment.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 //@Getter
@@ -13,6 +15,7 @@ import lombok.*;
 @Data
 public class UserRegistrationInfoDto {
 
+    @NotBlank(message = "Поле обязательно для заполнения")
     private String nickName;
     private String login;
     private String password;

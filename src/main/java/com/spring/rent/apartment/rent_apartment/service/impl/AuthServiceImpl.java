@@ -3,6 +3,8 @@ package com.spring.rent.apartment.rent_apartment.service.impl;
 import com.spring.rent.apartment.rent_apartment.dto.UserAuthInfoDto;
 import com.spring.rent.apartment.rent_apartment.dto.UserRegistrationInfoDto;
 import com.spring.rent.apartment.rent_apartment.entity.UserApplicationEntity;
+import com.spring.rent.apartment.rent_apartment.handlers.exeptions.UserNotFoundException;
+import com.spring.rent.apartment.rent_apartment.mapper.RentApartmentMapper;
 import com.spring.rent.apartment.rent_apartment.repository.UserRepository;
 import com.spring.rent.apartment.rent_apartment.service.AuthService;
 import com.spring.rent.apartment.rent_apartment.service.ValidationFieldService;
@@ -11,6 +13,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -65,29 +68,33 @@ public class AuthServiceImpl implements AuthService {
         if (!validFieldService.isValidLogin(registrationInfoDto.getLogin())) {
             return LOGIN_REQUIREMENT;
         }
-
-        userRepository.save(prepareUser(registrationInfoDto));
+        UserApplicationEntity userApplicationEntity = prepareUser(registrationInfoDto);
+        userApplicationEntity.setPassword(Base64EncoderDecoder.encode(userApplicationEntity.getPassword()));
+        userRepository.save(userApplicationEntity);
         return SUCCESSFUL_REGISTRATION;
     }
 
     public UserApplicationEntity prepareUser(UserRegistrationInfoDto registrationInfoDto) {
-        return new UserApplicationEntity(registrationInfoDto.getNickName(),
-                registrationInfoDto.getLogin(),
-                registrationInfoDto.getPassword());
+        RentApartmentMapper userMapper = Mappers.getMapper(RentApartmentMapper.class);
+        return userMapper.registrationDtoToEntity(registrationInfoDto);
     }
 
     public String getAuthorization(UserAuthInfoDto userAuthInfoDto) {
         Optional<UserApplicationEntity> optionalUser = Optional.ofNullable(userRepository.getUserApplicationEntityByLoginJpql(userAuthInfoDto.getLogin()));
-        UserApplicationEntity user = optionalUser.orElseThrow(() -> new RuntimeException(AUTH_NOT_FOUND_USER));
+        UserApplicationEntity user = optionalUser.orElseThrow(() -> new UserNotFoundException(AUTH_NOT_FOUND_USER,602));
 
+        String decodedPassword = Base64EncoderDecoder.decode(user.getPassword());
+        user.setPassword(decodedPassword);
         if (!userAuthInfoDto.getPassword().equals(user.getPassword())) {
             return NOT_VALID_PASSWORD;
         }
+
 
         String token = tokenGeneration();
 
 
         user.setToken(token);
+
 
         userRepository.save(user);
 
@@ -102,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String getLogOut(UserRegistrationInfoDto logOutInfoDto) {
         Optional<UserApplicationEntity> userOptional = Optional.ofNullable(userRepository.getUserApplicationEntityByLoginJpql(logOutInfoDto.getLogin()));
-        UserApplicationEntity user = userOptional.orElseThrow(() -> new RuntimeException(USER_NOT_FOUND));
+        UserApplicationEntity user = userOptional.orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND,600));
         user.setToken(null);
         userRepository.save(user);
         return SUCCESSFUL_LOGGED_OUT;
@@ -110,7 +117,7 @@ public class AuthServiceImpl implements AuthService {
 
     public void tokenValid(String token) {
         Optional<UserApplicationEntity> userOptional = Optional.ofNullable(findUserByCriteria(token));
-        UserApplicationEntity user = userOptional.orElseThrow(()-> new RuntimeException(LOG_IN_SYSTEM));
+        UserApplicationEntity user = userOptional.orElseThrow(()-> new UserNotFoundException(LOG_IN_SYSTEM,601));
         userRepository.save(user);
         }
 

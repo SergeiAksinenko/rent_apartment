@@ -8,12 +8,12 @@ import com.spring.rent.apartment.rent_apartment.dto.WeatherInfoDto;
 import com.spring.rent.apartment.rent_apartment.entity.AddressEntity;
 import com.spring.rent.apartment.rent_apartment.entity.ApartmentEntity;
 import com.spring.rent.apartment.rent_apartment.entity.RatingEntity;
+import com.spring.rent.apartment.rent_apartment.handlers.exeptions.ApartmentNotFoundException;
 import com.spring.rent.apartment.rent_apartment.mapper.RentApartmentMapper;
 import com.spring.rent.apartment.rent_apartment.repository.AddressRepository;
 import com.spring.rent.apartment.rent_apartment.repository.RatingRepository;
 import com.spring.rent.apartment.rent_apartment.repository.ApartmentRepository;
 import com.spring.rent.apartment.rent_apartment.service.IntegrationService;
-import com.spring.rent.apartment.rent_apartment.service.IntegrationWeatherService;
 import com.spring.rent.apartment.rent_apartment.service.RentApService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,8 +38,6 @@ public class RentApServiceImpl implements RentApService {
     public final RatingRepository ratingRepository;
 
     public final IntegrationService integrationService;
-
-    private final IntegrationWeatherService integrationWeatherService;
 
     public static final String APARTMENT_IS_EXIST = "Апартаменты уже зарегистрированы";
 
@@ -66,7 +64,7 @@ public class RentApServiceImpl implements RentApService {
     @Override
     public String addCommentToApartment(RatingDto rating) {
         ApartmentEntity apartment = apartmentRepository.findById(rating.getApartmentId())
-                .orElseThrow(() -> new RuntimeException(APARTMENT_NOT_FOUND));
+                .orElseThrow(() -> new ApartmentNotFoundException(APARTMENT_NOT_FOUND,700));
 
         RatingEntity ratingEntity = mapper.DtoToRatingEntity(rating,
                 apartment,
@@ -93,7 +91,7 @@ public class RentApServiceImpl implements RentApService {
     }
 
     public RentApartmentDto findApartment(Long id) {
-        ApartmentEntity apartment = apartmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Апартаменты недоступны"));
+        ApartmentEntity apartment = apartmentRepository.findById(id).orElseThrow(() -> new ApartmentNotFoundException(APARTMENT_NOT_FOUND,700));
         return mapper.entityToApartmentDto(apartment, apartment.getAddress());
     }
 
@@ -105,7 +103,7 @@ public class RentApServiceImpl implements RentApService {
 
     @Override
     public String getInfoByWeather(WeatherInfoDto weatherInfoDto) throws JsonProcessingException {
-        return integrationWeatherService.integrationWeatherCode(weatherInfoDto);
+        return integrationService.integrationWeatherCode(weatherInfoDto);
     }
 }
 

@@ -17,6 +17,5 @@ public class ValidationFieldServiceImpl implements ValidationFieldService {
         return login.contains("@");
     }
 
-
 }
 
