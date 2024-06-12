@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS comment (id int8,login varchar,password varchar)

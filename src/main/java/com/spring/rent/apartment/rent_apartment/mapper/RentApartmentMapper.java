@@ -3,9 +3,11 @@ package com.spring.rent.apartment.rent_apartment.mapper;
 
 import com.spring.rent.apartment.rent_apartment.dto.RatingDto;
 import com.spring.rent.apartment.rent_apartment.dto.RentApartmentDto;
+import com.spring.rent.apartment.rent_apartment.dto.UserRegistrationInfoDto;
 import com.spring.rent.apartment.rent_apartment.entity.AddressEntity;
 import com.spring.rent.apartment.rent_apartment.entity.ApartmentEntity;
 import com.spring.rent.apartment.rent_apartment.entity.RatingEntity;
+import com.spring.rent.apartment.rent_apartment.entity.UserApplicationEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -25,5 +27,7 @@ public interface RentApartmentMapper {
     public RatingEntity DtoToRatingEntity(RatingDto ratingDto, ApartmentEntity apartmentEntity,
                                           LocalDateTime dateValue);
 
-    public  RentApartmentDto entityToApartmentDto(ApartmentEntity apartment,AddressEntity address);
+    public RentApartmentDto entityToApartmentDto(ApartmentEntity apartment, AddressEntity address);
+
+    public UserApplicationEntity registrationDtoToEntity(UserRegistrationInfoDto registrationInfoDto);
 }

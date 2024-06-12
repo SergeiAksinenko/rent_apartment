@@ -18,14 +18,17 @@ public class UserApplicationEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "nick_name")
+    @Column(name = "nick_name",unique = true)
     private String nickName;
 
-    @Column(name = "login")
+    @Column(name = "login",unique = true)
     private String login;
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "email",unique = true)
+    private String email;
 
     @Column(name = "registration_data")
     private LocalDateTime registrationData;
@@ -33,10 +36,11 @@ public class UserApplicationEntity {
     @Column(name = "token")
     private String token;
 
-    public UserApplicationEntity(String nickName, String login, String password) {
+    public UserApplicationEntity(String nickName, String login, String password,String email) {
         this.nickName = nickName;
         this.login = login;
         this.password = password;
+        this.email = email;
         this.registrationData = LocalDateTime.now();
     }
 }
