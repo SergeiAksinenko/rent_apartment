@@ -1,10 +1,12 @@
 package com.example.architect_module.service.impl;
 
+
 import com.example.architect_module.dto.ArchitectDbDto;
 import com.example.architect_module.handlers.exceptions.ApartmentDbException;
 import com.example.architect_module.service.ArchitectDbService;
 import com.spring.rent.apartment.rent_apartment.service.impl.Base64EncoderDecoder;
 import lombok.RequiredArgsConstructor;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
@@ -17,8 +19,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ArchitectDbServiceImpl implements ArchitectDbService {
 
-
     private final JdbcTemplate jdbcTemplate;
+
+    private final Flyway flyway;
 
     @Value("${migration.script.pass}")
     private String MIGRATION_PATH;
@@ -49,6 +52,8 @@ public class ArchitectDbServiceImpl implements ArchitectDbService {
             String output = stringBuilder.toString();
             writeResultToFile(output, prepareScriptName(tableName, modificationType));
 
+            flyway.migrate();
+
             return output;
         }
         if (modificationType.equalsIgnoreCase("UPDATE")) {
@@ -63,6 +68,8 @@ public class ArchitectDbServiceImpl implements ArchitectDbService {
 
             String output = stringBuilder.toString();
             writeResultToFile(output, prepareScriptName(tableName, modificationType));
+
+            flyway.migrate();
 
             return output;
         }
@@ -96,6 +103,8 @@ public class ArchitectDbServiceImpl implements ArchitectDbService {
 
         String output = stringBuilder.toString();
         writeResultToFile(output, prepareScriptName(tableName, modification));
+
+        flyway.migrate();
 
         return output;
     }

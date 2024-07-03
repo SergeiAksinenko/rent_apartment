@@ -5,7 +5,7 @@ import com.example.architect_module.service.ArchitectDbService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import static com.spring.rent.apartment.rent_apartment.app_constant.AppConstant.TABLE_FUNCTION;
+import static com.spring.rent.apartment.rent_apartment.app_constant.AppConstant.*;
 
 
 @RestController
@@ -18,7 +18,7 @@ public class ArchitectDbController {
     public String getArchitectDatabase(@RequestBody ArchitectDbDto architectDbDto) {
         return architectDbService.getArchitectDatabase(architectDbDto);
     }
-    @GetMapping("/delete_table")
+    @GetMapping(DELETE_TABLE)
     public String deleteTable(@RequestParam String tableName,
                               @RequestParam String function){
         return architectDbService.deleteTable(tableName,function);

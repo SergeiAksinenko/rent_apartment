@@ -98,7 +98,7 @@ public class RentApServiceImpl implements RentApService {
     @Override
     public List<RentApartmentDto> getInfoByLocation(LocationInfoDto locationInfoDto) {
         integrationService.integrationWithGeocoder(locationInfoDto);
-        return null;
+        return null;  // Допилить!!!
     }
 
     @Override
