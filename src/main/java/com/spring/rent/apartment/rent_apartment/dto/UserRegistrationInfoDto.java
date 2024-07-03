@@ -1,7 +1,6 @@
 package com.spring.rent.apartment.rent_apartment.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 //@Getter

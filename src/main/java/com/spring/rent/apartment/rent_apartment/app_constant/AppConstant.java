@@ -29,6 +29,8 @@ public class AppConstant {
 
     public static final String TABLE_FUNCTION = BASE_ARCHITECT_DB + "/table_function";
 
+    public static final String DELETE_TABLE = BASE_ARCHITECT_DB + "/delete_table";
+
     /**
      * MESSAGE_CONSTANT
      */
