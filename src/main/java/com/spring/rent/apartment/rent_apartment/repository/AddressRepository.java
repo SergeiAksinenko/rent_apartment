@@ -18,5 +18,7 @@ public interface AddressRepository extends JpaRepository<AddressEntity,Long> {
 
     public List<AddressEntity> findAll();
 
+    @Query(value = "SELECT a FROM AddressEntity a WHERE a.city = :city")
+    public List<AddressEntity> findByCity(String city);
 
 }

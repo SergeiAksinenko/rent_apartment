@@ -1,13 +1,11 @@
 package com.spring.rent.apartment.rent_apartment.mapper;
 
 
+import com.spring.rent.apartment.rent_apartment.dto.BookingRequestDto;
 import com.spring.rent.apartment.rent_apartment.dto.RatingDto;
 import com.spring.rent.apartment.rent_apartment.dto.RentApartmentDto;
 import com.spring.rent.apartment.rent_apartment.dto.UserRegistrationInfoDto;
-import com.spring.rent.apartment.rent_apartment.entity.AddressEntity;
-import com.spring.rent.apartment.rent_apartment.entity.ApartmentEntity;
-import com.spring.rent.apartment.rent_apartment.entity.RatingEntity;
-import com.spring.rent.apartment.rent_apartment.entity.UserApplicationEntity;
+import com.spring.rent.apartment.rent_apartment.entity.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -30,4 +28,17 @@ public interface RentApartmentMapper {
     public RentApartmentDto entityToApartmentDto(ApartmentEntity apartment, AddressEntity address);
 
     public UserApplicationEntity registrationDtoToEntity(UserRegistrationInfoDto registrationInfoDto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "startBooking", source = "start")
+    @Mapping(target = "endBooking", source = "end")
+    @Mapping(target = "bookingTime", expression = "java(java.time.LocalDateTime.now())") // установка текущего времени
+    @Mapping(target = "apartment", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "product", ignore = true)
+    public BookingApartmentEntity dtoToBookingApartmentEntity(BookingRequestDto bookingRequestDto);
+
+    default Long convertLocalDateTimeToLong(LocalDateTime dateTime) {
+        return dateTime != null ? dateTime.toEpochSecond(java.time.ZoneOffset.UTC) : null;
+    }
 }

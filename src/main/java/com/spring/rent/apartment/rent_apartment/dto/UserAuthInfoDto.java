@@ -9,4 +9,5 @@ public class UserAuthInfoDto {
 
     private String password;
 
+
 }

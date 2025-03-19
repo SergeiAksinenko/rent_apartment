@@ -25,12 +25,17 @@ public class AppConstant {
 
     public static final String BY_WEATHER = BASE_PATH_APART + "/by_weather";
 
+    public static final String APART_BOOKING = BASE_PATH_APART + "/apart_booking";
+
     public static final String BASE_ARCHITECT_DB = "/architect";
 
     public static final String TABLE_FUNCTION = BASE_ARCHITECT_DB + "/table_function";
 
     public static final String DELETE_TABLE = BASE_ARCHITECT_DB + "/delete_table";
 
+    public static final String BASE_PRODUCT = "/product";
+
+    public static final String PREPARE_DISCOUNT = BASE_PRODUCT + "/prepare_discount";
     /**
      * MESSAGE_CONSTANT
      */

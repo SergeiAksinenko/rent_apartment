@@ -1,0 +1,152 @@
+{
+    "documentation": "https://opencagedata.com/api",
+    "licenses": [
+        {
+            "name": "see attribution guide",
+            "url": "https://opencagedata.com/credits"
+        }
+    ],
+    "rate": {
+        "limit": 2500,
+        "remaining": 2499,
+        "reset": 1721347200
+    },
+    "results": [
+        {
+            "annotations": {
+                "DMS": {
+                    "lat": "61° 5' 21.87312'' N",
+                    "lng": "72° 36' 43.05924'' E"
+                },
+                "MGRS": "43VCH7122375095",
+                "Maidenhead": "MP61hc31kl",
+                "Mercator": {
+                    "x": 8083126.517,
+                    "y": 8608941.249
+                },
+                "OSM": {
+                    "edit_url": "https://www.openstreetmap.org/edit?relation=1717287#map=16/61.08941/72.61196",
+                    "note_url": "https://www.openstreetmap.org/note/new#map=16/61.08941/72.61196&layers=N",
+                    "url": "https://www.openstreetmap.org/?mlat=61.08941&mlon=72.61196#map=16/61.08941/72.61196"
+                },
+                "UN_M49": {
+                    "regions": {
+                        "EASTERN_EUROPE": "151",
+                        "EUROPE": "150",
+                        "RU": "643",
+                        "WORLD": "001"
+                    },
+                    "statistical_groupings": [
+                        "MEDC"
+                    ]
+                },
+                "callingcode": 7,
+                "currency": {
+                    "alternate_symbols": [
+                        "руб.",
+                        "р."
+                    ],
+                    "decimal_mark": ",",
+                    "format": "%n %u",
+                    "html_entity": "&#x20BD;",
+                    "iso_code": "RUB",
+                    "iso_numeric": "643",
+                    "name": "Russian Ruble",
+                    "smallest_denomination": 1,
+                    "subunit": "Kopeck",
+                    "subunit_to_unit": 100,
+                    "symbol": "₽",
+                    "symbol_first": 0,
+                    "thousands_separator": "."
+                },
+                "flag": "🇷🇺",
+                "geohash": "vdges2frt76274zmg9ur",
+                "qibla": 224.75,
+                "roadinfo": {
+                    "drive_on": "right",
+                    "road": "unnamed road",
+                    "road_type": "pedestrian",
+                    "speed_in": "km/h"
+                },
+                "sun": {
+                    "rise": {
+                        "apparent": 1721340600,
+                        "astronomical": 0,
+                        "civil": 1721335500,
+                        "nautical": 0
+                    },
+                    "set": {
+                        "apparent": 1721319600,
+                        "astronomical": 0,
+                        "civil": 1721324580,
+                        "nautical": 0
+                    }
+                },
+                "timezone": {
+                    "name": "Asia/Yekaterinburg",
+                    "now_in_dst": 0,
+                    "offset_sec": 18000,
+                    "offset_string": "+0500",
+                    "short_name": "+05"
+                },
+                "what3words": {
+                    "words": "quickest.loudspeaker.bowlful"
+                }
+            },
+            "bounds": {
+                "northeast": {
+                    "lat": 61.0907263,
+                    "lng": 72.6165499
+                },
+                "southwest": {
+                    "lat": 61.0881152,
+                    "lng": 72.6085461
+                }
+            },
+            "components": {
+                "ISO_3166-1_alpha-2": "RU",
+                "ISO_3166-1_alpha-3": "RUS",
+                "ISO_3166-2": [
+                    "RU-KHM"
+                ],
+                "_category": "road",
+                "_normalized_city": "Nefteyugansk",
+                "_type": "road",
+                "city": "Nefteyugansk",
+                "continent": "Asia",
+                "country": "Russia",
+                "country_code": "ru",
+                "neighbourhood": "2-й микрорайон",
+                "postcode": "628309",
+                "region": "Ural Federal District",
+                "road": "unnamed road",
+                "road_type": "pedestrian",
+                "state": "Khanty-Mansiysk Autonomous Okrug – Ugra",
+                "suburb": "Промышленная зона Пионерная"
+            },
+            "confidence": 9,
+            "distance_from_q": {
+                "meters": 271
+            },
+            "formatted": "unnamed road, Промышленная зона Пионерная, Nefteyugansk, Khanty-Mansiysk Autonomous Okrug – Ugra, Russia, 628309",
+            "geometry": {
+                "lat": 61.0894092,
+                "lng": 72.6119609
+            }
+        }
+    ],
+    "status": {
+        "code": 200,
+        "message": "OK"
+    },
+    "stay_informed": {
+        "blog": "https://blog.opencagedata.com",
+        "mastodon": "https://en.osm.town/@opencage"
+    },
+    "thanks": "For using an OpenCage API",
+    "timestamp": {
+        "created_http": "Thu, 18 Jul 2024 08:58:06 GMT",
+        "created_unix": 1721293086
+    },
+    "total_results": 1
+}

@@ -5,6 +5,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.rent.apartment.rent_apartment.dto.LocationInfoDto;
 import com.spring.rent.apartment.rent_apartment.dto.WeatherInfoDto;
+import com.spring.rent.apartment.rent_apartment.dto.geocoder_response.Components;
+import com.spring.rent.apartment.rent_apartment.dto.geocoder_response.GeocoderResponse;
+import com.spring.rent.apartment.rent_apartment.dto.geocoder_response.ResultsObject;
+import com.spring.rent.apartment.rent_apartment.entity.BookingApartmentEntity;
 import com.spring.rent.apartment.rent_apartment.entity.IntegrationEntity;
 import com.spring.rent.apartment.rent_apartment.handlers.exeptions.IntegrationParamException;
 import com.spring.rent.apartment.rent_apartment.repository.IntegrationRepository;
@@ -15,6 +19,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+
+import static com.spring.rent.apartment.rent_apartment.service.impl.RentApServiceImpl.GEOCODER_EXCEPTION;
+import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
@@ -32,12 +41,28 @@ public class IntegrationServiceImpl implements IntegrationService {
     @Override
     public String integrationWithGeocoder(LocationInfoDto locationInfoDto) {
 
-        String resultInfoByLocation = restTemplate.exchange(prepareUrl(locationInfoDto, "GEO"),
+        GeocoderResponse geoCoderResult = restTemplate.exchange(prepareUrl(locationInfoDto, "GEO"),
                 HttpMethod.GET,
-                new HttpEntity<>(null,null),
-                String.class).getBody();
+                new HttpEntity<>(null, null),
+                GeocoderResponse.class).getBody();
 
-        return resultInfoByLocation;
+        return checkCityValue(geoCoderResult);
+    }
+
+    private String checkCityValue(GeocoderResponse geoCoderResult){
+        if(!isNull(geoCoderResult)){
+            List<ResultsObject> resultsList = geoCoderResult.getResultsList();
+            if(!isNull(resultsList) || resultsList.isEmpty()){
+                Components componentsResult = resultsList.get(0).getComponentsResult();
+                if(!isNull(componentsResult)){
+                    if(!isNull(componentsResult.getCity()))
+                        return componentsResult.getCity();
+                    if(!isNull(componentsResult.getTown()))
+                        return componentsResult.getTown();
+                }
+            }
+        }
+        throw new  RuntimeException("Ошибка обработки результата");
     }
 
     private String prepareUrl(LocationInfoDto locationInfoDto, String idIntegration) {
@@ -55,13 +80,20 @@ public class IntegrationServiceImpl implements IntegrationService {
     @Override
     public String integrationWeatherCode(WeatherInfoDto weatherInfoDto) throws JsonProcessingException {
 
-        RestTemplate restTemplate = new RestTemplate();
         String resultInfoByWeather = restTemplate.exchange(prepareUrl(weatherInfoDto,"WEATHER"),
                 HttpMethod.GET,
                 new HttpEntity<>(null, prepareHeadersForRequest()),
                 String.class).getBody();
 
         return prepareRequestForWeather(resultInfoByWeather);
+    }
+
+    @Override
+    public void integrationProductModule(String bookingValue) {
+        restTemplate.exchange(prepareUrl(bookingValue,"PRODUCT_MODULE"),
+                HttpMethod.GET,
+                new HttpEntity<>(null,null),
+                Void.class).getBody();
     }
 
     private String prepareRequestForWeather(String allWeatherInfo) throws JsonProcessingException  {
@@ -82,9 +114,15 @@ public class IntegrationServiceImpl implements IntegrationService {
         return  String.format(integrationParam.getPath(), weatherInfoDto.getLatitude(), weatherInfoDto.getLongitude(),Base64EncoderDecoder.decode(integrationParam.getKey()));
     }
 
+    private String prepareUrl(String bookingValue, String idIntegration) {
+        IntegrationEntity integrationParam = getIntegrationParam(idIntegration);
+        return  String.format(integrationParam.getPath(), bookingValue);
+    }
+
     private HttpHeaders prepareHeadersForRequest(){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Content-Type", "application/json");
         return httpHeaders;
     }
+
 }

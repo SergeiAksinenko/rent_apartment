@@ -18,5 +18,23 @@ public class UserRegistrationInfoDto {
     private String nickName;
     private String login;
     private String password;
+    private String email;
+    private Boolean isStudent;
+    private Boolean isCorporateClient;
+    private Boolean hasReferral;
+    private Boolean isNewUser;
+    private Boolean isHolidayPeriod;
+    private Integer stayDurationDay;
+    private Boolean isSeniorClient;
+    private Boolean isOffSession;
+    private Boolean isEarlyBooking;
+    private Boolean isLocalResident;
+    private Boolean hasChildren;
+    private Boolean isNonResident;
+    private Boolean isBirthday;
+    private Boolean hasAdventurePackage;
+    private Boolean isVIP;
+    private Boolean isLastMinuteBooking;
+
 
 }
