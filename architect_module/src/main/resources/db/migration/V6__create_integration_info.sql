@@ -6,4 +6,5 @@ CREATE TABLE IF NOT EXISTS  integration_info(
 
 INSERT INTO integration_info(id, path, key)
 VALUES ('GEO','https://api.opencagedata.com/geocode/v1/json?q=%s+%s&key=%s','ZTNkNzg1OTU5YmJlNDFhNzgwZDE3YzgzYjhhYThhNmU='),
-       ('WEATHER','https://api.weather.yandex.ru/v2/forecast?lat=%s&lon=%s&lang=ru_RU','ODUyNzRlYTUtYWViNy00Yjk4LWE0ZWEtNzY5ZWE1YjgwMmE0');
+       ('WEATHER','https://api.weather.yandex.ru/v2/forecast?lat=%s&lon=%s&lang=ru_RU','ODUyNzRlYTUtYWViNy00Yjk4LWE0ZWEtNzY5ZWE1YjgwMmE0'),
+       ('PRODUCT_MODULE','http://localhost:8899/prepare_discount?bookingValue=%s',null);

@@ -10,4 +10,5 @@ public interface IntegrationService {
 
     public String integrationWeatherCode(WeatherInfoDto weatherInfoDto) throws JsonProcessingException;
 
+    public void integrationProductModule(String bookingValue);
 }

@@ -52,12 +52,18 @@ public class ApartmentEntity {
     @OneToOne(mappedBy = "apartment")
     private AddressEntity address;
 
+    @Column(name = "photo_path")
+    private String photoPath;
+
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "apartment")
     private List<RatingEntity> ratingEntity;
 
+    @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<StatisticInfoEntity> statisticInfoEntity;
+
     public ApartmentEntity(int numberOfRooms, int area, int pricePerNight, String startDate, String endDate,
                            int totalGuest, String availability, String description, LocalDateTime registrationDate,
-                           Double globalRating, AddressEntity address, List<RatingEntity> ratingEntity) {
+                           Double globalRating, AddressEntity address, List<RatingEntity> ratingEntity,List<StatisticInfoEntity> statisticInfoEntity) {
         this.numberOfRooms = numberOfRooms;
         this.area = area;
         this.pricePerNight = pricePerNight;
@@ -70,5 +76,6 @@ public class ApartmentEntity {
         this.globalRating = globalRating;
         this.address = address;
         this.ratingEntity = ratingEntity;
+        this.statisticInfoEntity = statisticInfoEntity;
     }
 }

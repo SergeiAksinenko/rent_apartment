@@ -9,9 +9,80 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
     volumes:
-      - db:/var/lib/postgresql/data postgres
+      - pg_db:/var/lib/postgresql/data
     ports:
-      - "9091:5432"
+      - "5435:5432"
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=user_activity_analytics_db
+    volumes:
+      - mongo_db:/data/db
+    ports:
+      - "2719:27017"
+
+#  rent_server:
+#    image: your_rent_server_image
+#    build:
+#      context: ./rent_server
+#      dockerfile: Dockerfile
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=default
+#      - EUREKA_SERVER_PORT=8095
+#    ports:
+#      - "8095:8095"
+#    depends_on:
+#      - pg_db
+#
+#  rent_apartment:
+#    image: your_rent_apartment_image
+#    build:
+#      context: ./rent_apartment
+#      dockerfile: Dockerfile
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=default
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://pg_db:5432/apartment_db
+#      - SPRING_DATASOURCE_USERNAME=admin
+#      - SPRING_DATASOURCE_PASSWORD=admin
+#      - EUREKA_SERVER_URL=http://rent_server:8095/eureka
+#    ports:
+#      - "9090:9090"
+#    depends_on:
+#      - pg_db
+#      - rent_server
+#
+#  product_module:
+#    image: your_product_module_image
+#    build:
+#      context: ./product_module
+#      dockerfile: Dockerfile
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=default
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://pg_db:5432/apartment_db
+#      - SPRING_DATASOURCE_USERNAME=admin
+#      - SPRING_DATASOURCE_PASSWORD=admin
+#      - EUREKA_SERVER_URL=http://rent_server:8095/eureka
+#    ports:
+#      - "8888:8888"
+#    depends_on:
+#      - pg_db
+#      - rent_server
+#
+#  api_gateway:
+#    image: your_api_gateway_image
+#    build:
+#      context: ./api_gateway
+#      dockerfile: Dockerfile
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=default
+#      - EUREKA_SERVER_URL=http://rent_server:8095/eureka
+#    ports:
+#      - "8899:8899"
+#    depends_on:
+#      - rent_server
 
 volumes:
-  db:
+  pg_db:
+  mongo_db:
